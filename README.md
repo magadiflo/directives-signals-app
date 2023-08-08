@@ -65,3 +65,43 @@ Una señal es un espacio en memoria que sabe dónde se está usando. Las señale
 > Las señales pueden ser de escritura o de solo lectura.
 
 Los Signals nos pueden ayudar a evitar todas esas comprobaciones innecesarias y simplemente actualizar la parte de la aplicación que ha cambiado, a esto se le conoce como reactividad de grano fino. Esto aumenta enormemente el rendimiento de la aplicación y permite una mayor velocidad de actualización en la interfaz de usuario.
+
+## Nuestra primera señal - Signal
+
+Inicialmente teníamos nuestro arreglo de menú de esta manera:
+
+````typescript
+export class SideMenuComponent {
+
+  public menuItems: MenuItem[] = [
+    { title: 'Contador', route: 'counter', },
+    { title: 'Usuario', route: 'user-info', },
+    { title: 'Mutaciones', route: 'properties', },
+  ];
+}
+````
+
+Pero ahora, como trabajaremos con señales, convertiremos ese arreglo de menú en una señal. Recordemos la definición de señales que decía **"una señal es un envoltorio alrededor de un valor"**, por lo tanto, envolveremos a nuestro arreglo de menú dentro de la función **signal()** de esa forma estaremos convirtiendo el arreglo de menú en una señal que contiene el arreglo del menú:
+
+````typescript
+export class SideMenuComponent {
+
+  public menuItems = signal<MenuItem[]>([
+    { title: 'Contador', route: 'counter', },
+    { title: 'Usuario', route: 'user-info', },
+    { title: 'Mutaciones', route: 'properties', },
+  ]);
+
+}
+````
+
+Ahora, para poder acceder al valor de nuestra señal usaremos nuestra propiedad **menuItems()** con paréntesis, ya que si solo usamos **menuItems**, sin paréntesis haría referencia a la señal y no a su valor, nos marcaría un error: ``type 'WritableSignal<MenuItem[]>' is not assignable to type 'NgIterable<any> | null | undefined'.``
+
+````html
+<ul class="list-group">
+  <a *ngFor="let item of menuItems()" [routerLink]="[item.route]" routerLinkActive="active"
+    class="list-group-item list-group-item-action">
+    {{ item.title }}
+  </a>
+</ul>
+````

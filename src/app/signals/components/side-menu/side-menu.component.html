@@ -1,5 +1,5 @@
 <ul class="list-group">
-  <a *ngFor="let item of menuItems" [routerLink]="[item.route]" routerLinkActive="active"
+  <a *ngFor="let item of menuItems()" [routerLink]="[item.route]" routerLinkActive="active"
     class="list-group-item list-group-item-action">
     {{ item.title }}
   </a>
