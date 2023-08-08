@@ -51,3 +51,5 @@ export class ProductPageComponent {
 Como se observa, esa otra forma es usando la función ``inject()``. Ambas formas, tanto usando el **constructor como usando el inject() son válidas.**
 
 
+# Sección: Signals en Angular - Angular 16+
+
