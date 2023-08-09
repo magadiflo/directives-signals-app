@@ -169,3 +169,7 @@ export class CounterPageComponent {
 }
 ````
 Como se observa en el código anterior, el **squareCounter** es una señal computada, por lo tanto si queremos usar el **set()** o **update()** **nos marcará un error de compilación**, porque no es una señal de escritura **(WritableSignal)**.
+
+## Información de usuario
+
+Recordar que en estas nuevas versiones de Angular podemos usar la función **inject()** para poder realizar inyección de dependencias, o seguir usando el tradicional **constructor(){}** para el mismo propósito.
