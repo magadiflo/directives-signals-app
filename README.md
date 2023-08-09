@@ -53,7 +53,7 @@ Como se observa, esa otra forma es usando la función ``inject()``. Ambas formas
 
 # Sección: Signals en Angular - Angular 16+
 
-## ¿Qué es un Signals?
+## [¿Qué es un Signals?](https://angular.io/guide/signals)
 
 Una señal es un espacio en memoria que sabe dónde se está usando. Las señales le dicen a Angular dónde exactamanente **tal elemento** está siendo utilizada. Podríamos verlo como una forma simplificada de un tipo de programación reactiva.
 
@@ -170,6 +170,58 @@ export class CounterPageComponent {
 ````
 Como se observa en el código anterior, el **squareCounter** es una señal computada, por lo tanto si queremos usar el **set()** o **update()** **nos marcará un error de compilación**, porque no es una señal de escritura **(WritableSignal)**.
 
-## Información de usuario
 
-Recordar que en estas nuevas versiones de Angular podemos usar la función **inject()** para poder realizar inyección de dependencias, o seguir usando el tradicional **constructor(){}** para el mismo propósito.
+**NOTA**
+
+> Recordar que en estas nuevas versiones de Angular podemos usar la función **inject()** para poder realizar inyección de dependencias, o seguir usando el tradicional **constructor(){}** para el mismo propósito.
+
+## Mutaciones
+
+Cuando se trabaja con señales que contienen objetos, **a veces es útil mutar ese objeto directamente.** Por ejemplo, si el objeto es una matriz, es posible que desee insertar un nuevo valor sin reemplazar la matriz por completo. Para hacer un cambio interno como este, usa el método .mutate:
+
+Veamos el ejemplo propuesto por Angular:
+````typescript
+const todos = signal([{title: 'Learn signals', done: false}]);
+
+todos.mutate(value => {
+  value[0].done = true;
+});
+````
+
+Ahora veamos el ejemplo desarrollado en el curso de Fernando:
+````typescript
+export class PropertiesPageComponent {
+
+  public user = signal<User>({
+    id: 1,
+    email: 'george.bluth@reqres.in',
+    first_name: 'George',
+    last_name: 'Bluth',
+    avatar: 'https://reqres.in/img/faces/1-image.jpg'
+  });
+
+  onFieldUpdated(field: keyof User, value: string): void {
+    this.user.mutate(current => {
+      switch (field) {
+        case 'email':
+          current.email = value;
+          break;
+        case 'first_name':
+          current.first_name = value;
+          break;
+        case 'last_name':
+          current.last_name = value;
+          break;
+        case 'avatar':
+          current.avatar = value;
+          break;
+        case 'id':
+          current.id = Number(value);
+          break;
+      }
+    });
+  }
+
+}
+````
+Lo que hacemos con la mutación es cambiar un campo específico del objeto, es decir, mutar su valor.
