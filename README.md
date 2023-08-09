@@ -225,3 +225,27 @@ export class PropertiesPageComponent {
 }
 ````
 Lo que hacemos con la mutación es cambiar un campo específico del objeto, es decir, mutar su valor.
+
+## Efectos con señales
+
+Las señales son útiles porque pueden notificar a los consumidores interesados cuando cambian. **Un efecto es una operación que se ejecuta cada vez que cambian uno o más valores de señal.** Puede crear un efecto con la función de **effect()**:
+
+````typescript
+export class PropertiesPageComponent {
+  public counter = signal(10);
+  public user = signal<User>({/* omitted properties */});
+
+  public userChangeEffect = effect(() => {
+    console.log(`${this.user().first_name} - ${this.counter()}`);
+  });
+}
+````
+
+**Los efectos siempre se ejecutan al menos una vez.** Cuando se ejecuta un efecto, rastrea cualquier lectura de valor de señal. **Cada vez que alguno de estos valores de señal cambia, el efecto vuelve a ejecutarse.** Al igual que las señales calculadas, los efectos realizan un seguimiento de sus dependencias de forma dinámica y solo rastrean las señales que se leyeron en la ejecución más reciente.
+
+Los efectos siempre se ejecutan de forma asíncrona, durante el proceso de detección de cambios.
+
+> **El efecto se limpia o destruye automáticamente** al salir del componente.
+>
+> En nuestro ejemplo, el efecto, se dispara por defecto al momento de crearse este componente
+> Dentro del efecto estamos usando las señales user y counter, entonces el efecto se disparará siempre que cualquiera de estas dos señales cambien

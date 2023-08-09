@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, effect, signal } from '@angular/core';
 
 import { User } from '../../interfaes/user-request.interface';
 
@@ -10,7 +10,7 @@ import { User } from '../../interfaes/user-request.interface';
 })
 export class PropertiesPageComponent {
 
-
+  public counter = signal(10);
   public user = signal<User>({
     id: 1,
     email: 'george.bluth@reqres.in',
@@ -19,7 +19,9 @@ export class PropertiesPageComponent {
     avatar: 'https://reqres.in/img/faces/1-image.jpg'
   });
 
-
+  public userChangeEffect = effect(() => {
+    console.log(`${this.user().first_name} - ${this.counter()}`);
+  });
 
   onFieldUpdated(field: keyof User, value: string): void {
     this.user.mutate(current => {
@@ -41,6 +43,10 @@ export class PropertiesPageComponent {
           break;
       }
     });
+  }
+
+  increaseBy(value: number): void {
+    this.counter.update(current => current + value);
   }
 
 }
