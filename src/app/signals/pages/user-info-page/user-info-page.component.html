@@ -16,7 +16,7 @@
 
     <img [src]="currentUser()?.avatar" alt="Avatar">
   </div>
-  <div class="col-8 text-danger">
+  <div class="col-8 text-danger" *ngIf="!userWasFound()">
     <h3>Usuario no encontrado</h3>
   </div>
 </div>
